@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+from pathlib import Path
 
 import voluptuous as vol
 
@@ -10,7 +11,10 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant, ServiceCall, ServiceResponse, SupportsResponse
 from homeassistant.exceptions import ConfigEntryNotReady, ServiceValidationError
+from homeassistant.components.frontend import add_extra_js_url
+from homeassistant.components.http import StaticPathConfig
 from homeassistant.helpers import config_validation as cv
+from homeassistant.loader import async_get_integration
 
 from . import engine
 from .const import (
@@ -37,6 +41,8 @@ CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
 type SncfConfigEntry = ConfigEntry[StationCoordinator]
 
 KEY_HUB = "hub"
+CARD_FILE = "lp-sncf-france-card.js"
+CARD_URL = f"/{DOMAIN}/{CARD_FILE}"
 
 
 async def async_get_hub(hass: HomeAssistant) -> SncfHub:
@@ -52,7 +58,17 @@ async def async_get_hub(hass: HomeAssistant) -> SncfHub:
 
 async def async_setup(hass: HomeAssistant, config: dict) -> bool:
     _register_services(hass)
+    await _async_register_card(hass)
     return True
+
+
+async def _async_register_card(hass: HomeAssistant) -> None:
+    """Serve the bundled Lovelace card and load it on every dashboard."""
+    integration = await async_get_integration(hass, DOMAIN)
+    path = Path(__file__).parent / "www" / CARD_FILE
+    await hass.http.async_register_static_paths([StaticPathConfig(CARD_URL, str(path), True)])
+    # the version in the URL makes browsers reload the card after each update
+    add_extra_js_url(hass, f"{CARD_URL}?v={integration.version}")
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: SncfConfigEntry) -> bool:

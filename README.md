@@ -39,6 +39,28 @@ Add one entry per station. Options: rows per board, time horizon, hide minor mes
 
 Each row of a board contains: `train`, `mode`, `line`, `terminus`, `via`, `scheduled`, `expected`, `delay`, `platform`, `status` (`scheduled`, `on_time`, `delayed`, `cancelled`), `realtime`, `messages`, `assistance_here`, `assistance_terminus`.
 
+## Dashboard card (included)
+
+The integration ships its own card — nothing to add in *Resources*.
+Edit a dashboard → *Add card* → **LP SNCF France**, pick the station.
+
+- Departures / arrivals board (tabs), expected time, delay, platform, cancellations, calling points.
+- Header pills: PSH/PMR assistance (open until / opens at), lifts state (click to list), real-time feed.
+- ♿ badges per train: assistance at the station and at the terminus at the time of the train.
+- Click a train for details (line, all calling points, disruption messages).
+- Full visual editor, including **fonts, sizes and colours per element** (empty = default).
+
+```yaml
+type: custom:lp-sncf-france-card
+device: <device id>          # picked in the editor
+view: both                   # both | departures | arrivals
+rows: 10
+messages: all                # all | major | none
+styles:                      # optional, per element: <role>_font / _size / _color
+  dest_size: 20
+  time_color: "#ffd60a"
+```
+
 ## Actions
 - `lp_sncf_france.get_board` — board on demand (station, direction, rows, horizon) → response.
 - `lp_sncf_france.search_stations` — search the national station reference → response.
@@ -65,6 +87,8 @@ Intégration Home Assistant pour les gares françaises, **uniquement à partir d
 - **Messages d'incident** par train.
 - **Assistance PSH/PMR** : ouverte ou non à l'instant, point de rendez-vous, horaires — et pour chaque train, ouverture de l'assistance **au départ et à l'arrivée** à l'heure du train.
 - **Ascenseurs et escalators** : état en direct (mise à jour horaire), capteur de panne pour les notifications.
+
+Une **carte de tableau de bord** est incluse (aucune ressource à ajouter) : *Ajouter une carte → LP SNCF France*, avec éditeur visuel complet, y compris polices/tailles/couleurs par élément.
 
 Installation : HACS → dépôts personnalisés → `https://github.com/LePousson/lp-sncf-france` (catégorie *Intégration*), puis *Paramètres → Appareils et services → Ajouter → LP SNCF France*.
 
