@@ -1,0 +1,31 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Publish release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check manifest version matches tag
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          ver=$(python3 -c "import json;print(json.load(open('custom_components/lp_sncf_france/manifest.json'))['version'])")
+          [ "$tag" = "$ver" ] || { echo "Tag $tag != manifest $ver"; exit 1; }
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          notes=".github/release-notes/${GITHUB_REF_NAME}.md"
+          if [ -f "$notes" ]; then
+            gh release create "$GITHUB_REF_NAME" --title "$GITHUB_REF_NAME" --notes-file "$notes"
+          else
+            gh release create "$GITHUB_REF_NAME" --title "$GITHUB_REF_NAME" --generate-notes
+          fi
