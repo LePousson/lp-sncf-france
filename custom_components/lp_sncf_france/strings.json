@@ -1,0 +1,146 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Add a station",
+        "description": "Type part of the station name (accents and case don't matter).",
+        "data": {
+          "query": "Station name"
+        }
+      },
+      "pick": {
+        "title": "Choose the station",
+        "description": "♿ = PSH/PMR assistance service available.",
+        "data": {
+          "station_id": "Station"
+        }
+      }
+    },
+    "error": {
+      "no_match": "No station matches this name.",
+      "cannot_connect": "SNCF open data is unreachable, try again later."
+    },
+    "abort": {
+      "already_configured": "This station is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Board options",
+        "data": {
+          "rows": "Rows per board",
+          "horizon_hours": "Time horizon",
+          "hide_minor_messages": "Hide minor disruption messages"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "departures": {
+        "name": "Next departure"
+      },
+      "arrivals": {
+        "name": "Next arrival"
+      },
+      "assistance": {
+        "name": "PSH/PMR assistance",
+        "state": {
+          "open": "Open",
+          "closed": "Closed",
+          "mobile": "Mobile team",
+          "none": "No service",
+          "unknown": "Unknown"
+        }
+      },
+      "lifts_out_of_order": {
+        "name": "Lifts out of order"
+      }
+    },
+    "binary_sensor": {
+      "lift_problem": {
+        "name": "Lift outage"
+      },
+      "realtime_feed": {
+        "name": "Real-time feed"
+      }
+    }
+  },
+  "exceptions": {
+    "no_station": {
+      "message": "No station is configured."
+    },
+    "unknown_station": {
+      "message": "Station {uic} is not configured."
+    }
+  },
+  "selector": {
+    "direction": {
+      "options": {
+        "departures": "Departures",
+        "arrivals": "Arrivals"
+      }
+    },
+    "refresh_what": {
+      "options": {
+        "realtime": "Real time",
+        "timetable": "Timetable (GTFS)",
+        "reference": "Stations, assistance, lifts",
+        "all": "Everything"
+      }
+    }
+  },
+  "services": {
+    "get_board": {
+      "name": "Get station board",
+      "description": "Departures or arrivals merging the timetable and real time.",
+      "fields": {
+        "uic": {
+          "name": "UIC code",
+          "description": "Configured station (default: first one)."
+        },
+        "direction": {
+          "name": "Direction",
+          "description": "Departures or arrivals."
+        },
+        "rows": {
+          "name": "Rows",
+          "description": "Number of trains."
+        },
+        "horizon_hours": {
+          "name": "Horizon",
+          "description": "Hours ahead."
+        },
+        "hide_minor_messages": {
+          "name": "Hide minor messages",
+          "description": "Drop low-severity disruption messages."
+        }
+      }
+    },
+    "search_stations": {
+      "name": "Search stations",
+      "description": "Search the national station reference.",
+      "fields": {
+        "query": {
+          "name": "Text",
+          "description": "Part of the station name."
+        },
+        "limit": {
+          "name": "Limit",
+          "description": "Maximum results."
+        }
+      }
+    },
+    "refresh": {
+      "name": "Refresh",
+      "description": "Force a refresh of the open data sources.",
+      "fields": {
+        "what": {
+          "name": "What",
+          "description": "Which data to reload."
+        }
+      }
+    }
+  }
+}

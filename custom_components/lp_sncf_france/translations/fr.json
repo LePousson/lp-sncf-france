@@ -1,0 +1,146 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Ajouter une gare",
+        "description": "Tape une partie du nom de la gare (accents et majuscules indifférents).",
+        "data": {
+          "query": "Nom de la gare"
+        }
+      },
+      "pick": {
+        "title": "Choisis la gare",
+        "description": "♿ = service d'assistance PSH/PMR disponible.",
+        "data": {
+          "station_id": "Gare"
+        }
+      }
+    },
+    "error": {
+      "no_match": "Aucune gare ne correspond à ce nom.",
+      "cannot_connect": "L'open data SNCF est injoignable, réessaie plus tard."
+    },
+    "abort": {
+      "already_configured": "Cette gare est déjà configurée."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Options du panneau",
+        "data": {
+          "rows": "Lignes par panneau",
+          "horizon_hours": "Horizon",
+          "hide_minor_messages": "Masquer les messages d'incident mineurs"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "departures": {
+        "name": "Prochain départ"
+      },
+      "arrivals": {
+        "name": "Prochaine arrivée"
+      },
+      "assistance": {
+        "name": "Assistance PSH/PMR",
+        "state": {
+          "open": "Ouverte",
+          "closed": "Fermée",
+          "mobile": "Équipe mobile",
+          "none": "Pas de service",
+          "unknown": "Inconnue"
+        }
+      },
+      "lifts_out_of_order": {
+        "name": "Ascenseurs en panne"
+      }
+    },
+    "binary_sensor": {
+      "lift_problem": {
+        "name": "Panne d'ascenseur"
+      },
+      "realtime_feed": {
+        "name": "Flux temps réel"
+      }
+    }
+  },
+  "exceptions": {
+    "no_station": {
+      "message": "Aucune gare n'est configurée."
+    },
+    "unknown_station": {
+      "message": "La gare {uic} n'est pas configurée."
+    }
+  },
+  "selector": {
+    "direction": {
+      "options": {
+        "departures": "Départs",
+        "arrivals": "Arrivées"
+      }
+    },
+    "refresh_what": {
+      "options": {
+        "realtime": "Temps réel",
+        "timetable": "Horaires (GTFS)",
+        "reference": "Gares, assistance, ascenseurs",
+        "all": "Tout"
+      }
+    }
+  },
+  "services": {
+    "get_board": {
+      "name": "Panneau d'une gare",
+      "description": "Départs ou arrivées fusionnant horaires et temps réel.",
+      "fields": {
+        "uic": {
+          "name": "Code UIC",
+          "description": "Gare configurée (par défaut : la première)."
+        },
+        "direction": {
+          "name": "Sens",
+          "description": "Départs ou arrivées."
+        },
+        "rows": {
+          "name": "Lignes",
+          "description": "Nombre de trains."
+        },
+        "horizon_hours": {
+          "name": "Horizon",
+          "description": "Heures à venir."
+        },
+        "hide_minor_messages": {
+          "name": "Masquer les messages mineurs",
+          "description": "Ignore les messages d'incident de faible gravité."
+        }
+      }
+    },
+    "search_stations": {
+      "name": "Chercher une gare",
+      "description": "Recherche dans le référentiel national des gares.",
+      "fields": {
+        "query": {
+          "name": "Texte",
+          "description": "Partie du nom de la gare."
+        },
+        "limit": {
+          "name": "Nombre max",
+          "description": "Nombre maximum de résultats."
+        }
+      }
+    },
+    "refresh": {
+      "name": "Rafraîchir",
+      "description": "Force le rechargement des sources open data.",
+      "fields": {
+        "what": {
+          "name": "Quoi",
+          "description": "Données à recharger."
+        }
+      }
+    }
+  }
+}
