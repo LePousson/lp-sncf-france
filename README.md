@@ -1,3 +1,10 @@
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/logo_dark.png">
+    <img src="docs/logo.png" alt="LP SNCF France" width="420">
+  </picture>
+</p>
+
 # LP SNCF France
 
 Home Assistant integration for French railway stations, built **only on SNCF open data — no API key, no account**.
